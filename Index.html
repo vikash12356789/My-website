@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe Game</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #111;
+            color: white;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        #game {
+            display: grid;
+            grid-template-columns: repeat(3, 90px);
+            gap: 8px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .box {
+            width: 90px;
+            height: 90px;
+            font-size: 40px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+
+        #message {
+            font-size: 22px;
+            margin: 25px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #reset {
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>❌ Tic Tac Toe ⭕</h1>
+
+    <p id="message">Player X की चाल</p>
+
+    <div id="game">
+        <button class="box" onclick="play(0)"></button>
+        <button class="box" onclick="play(1)"></button>
+        <button class="box" onclick="play(2)"></button>
+
+        <button class="box" onclick="play(3)"></button>
+        <button class="box" onclick="play(4)"></button>
+        <button class="box" onclick="play(5)"></button>
+
+        <button class="box" onclick="play(6)"></button>
+        <button class="box" onclick="play(7)"></button>
+        <button class="box" onclick="play(8)"></button>
+    </div>
+
+    <br>
+
+    <button id="reset" onclick="resetGame()">🔄 New Game</button>
+
+    <script>
+        let board = ["", "", "", "", "", "", "", ""];
+        let player = "X";
+        let gameOver = false;
+
+        function play(index) {
+
+            if (board[index] != "" || gameOver) {
+                return;
+            }
+
+            board[index] = player;
+            document.getElementsByClassName("box")[index].innerHTML = player;
+
+            if (checkWinner()) {
+                document.getElementById("message").innerHTML =
+                    "🎉 Player " + player + " जीत गया!";
+                gameOver = true;
+                return;
+            }
+
+            if (!board.includes("")) {
+                document.getElementById("message").innerHTML =
+                    "🤝 Game Draw!";
+                gameOver = true;
+                return;
+            }
+
+            player = player == "X" ? "O" : "X";
+
+            document.getElementById("message").innerHTML =
+                "Player " + player + " की चाल";
+        }
+
+        function checkWinner() {
+
+            let wins = [
+                [0,1,2],
+                [3,4,5],
+                [6,7,8],
+                [0,3,6],
+                [1,4,7],
+                [2,5,8],
+                [0,4,8],
+                [2,4,6]
+            ];
+
+            for (let combination of wins) {
+
+                let a = combination[0];
+                let b = combination[1];
+                let c = combination[2];
+
+                if (
+                    board[a] != "" &&
+                    board[a] == board[b] &&
+                    board[b] == board[c]
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function resetGame() {
+
+            board = ["", "", "", "", "", "", "", ""];
+            player = "X";
+            gameOver = false;
+
+            let boxes = document.getElementsByClassName("box");
+
+            for (let box of boxes) {
+                box.innerHTML = "";
+            }
+
+            document.getElementById("message").innerHTML =
+                "Player X की चाल";
+        }
+    </script>
+
+</body>
+</html>
